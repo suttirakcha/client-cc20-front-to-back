@@ -7,6 +7,8 @@ import Dashboard from "../pages/admin/Dashboard";
 import Manage from "../pages/admin/Manage";
 import AdminLayout from "../layouts/AdminLayout";
 import Layout from "../layouts/Layout";
+import HomeUser from "../pages/user/HomeUser";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 function AppRouter() {
   return (
@@ -19,9 +21,19 @@ function AppRouter() {
         <Route path="login" element={<Login />} />
       </Route>
 
+      <Route
+        path="user"
+        element={<ProtectedRoutes el={<Layout />} allows={["USER", "ADMIN"]} />}
+      >
+        <Route index element={<HomeUser />} />
+      </Route>
+
       {/* Private */}
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route path="dashboard" element={<Dashboard />} />
+      <Route
+        path="admin"
+        element={<ProtectedRoutes el={<AdminLayout />} allows={["ADMIN"]} />}
+      >
+        <Route index element={<Dashboard />} />
         <Route path="manage" element={<Manage />} />
       </Route>
     </Routes>
